@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/seiretsym/manicurated#readme",
   "dependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
     "if-env": "^1.0.4",
