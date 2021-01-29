@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import session from 'express-session';
+import routes from './routes';
 
 // server config
 const server = express();
@@ -29,6 +30,9 @@ const mongoConfigs = {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }
+
+// load routes
+server.use(routes);
 
 // open connections
 mongoose.connect(MONGODB_URI, mongoConfigs);
