@@ -25,14 +25,6 @@ server.use(session({
   saveUninitialized: true
 }))
 
-// mongoose config
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/manicurated";
-const mongoConfigs = {
-  useFindAndModify: false,
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-}
-
 // ------------ test code
 
 // db.User.findOne({
@@ -45,6 +37,14 @@ const mongoConfigs = {
 
 // load routes
 server.use(routes);
+
+// mongoose config
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost/manicurated";
+const mongoConfigs = {
+  useFindAndModify: false,
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}
 
 // open connections
 mongoose.connect(MONGODB_URI, mongoConfigs);
