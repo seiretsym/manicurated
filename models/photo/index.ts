@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 // photo type
-interface Photo extends Document {
+export interface Photo extends Document {
   url: string,
 }
 

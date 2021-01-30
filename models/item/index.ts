@@ -1,7 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 // item type
-interface Item extends Document {
+export interface Item extends Document {
   name: string,
   picture: string,
   brand: string,

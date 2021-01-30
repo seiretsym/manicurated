@@ -10,7 +10,7 @@ interface User extends Document {
 }
 
 // model method type
-interface UserMethods extends User, Document {
+export interface UserMethods extends User, Document {
   validatePassword(password: string): boolean
 }
 
@@ -19,9 +19,7 @@ const UserSchema = new Schema<UserMethods>({
   email: {
     type: String,
     required: true,
-    index: {
-      unique: true
-    }
+    unique: true
   },
   password: {
     type: String,
@@ -29,10 +27,10 @@ const UserSchema = new Schema<UserMethods>({
   },
   profile: {
     type: Schema.Types.ObjectId,
-    ref: "Profile",
-    required: true
+    ref: "Profile"
   }
 })
+
 
 // create method for validating password
 UserSchema.methods.validatePassword = function (this: UserMethods, password: string) {
@@ -41,20 +39,45 @@ UserSchema.methods.validatePassword = function (this: UserMethods, password: str
 }
 
 // create hook for password encryption
-UserSchema.pre("save", function (this: User, next: Function) {
+UserSchema.pre("save", async function (this: User, next: Function) {
   // check if this.password has been modified (it should be since it's a required field)
   if (this.isModified("password")) {
     // change the password stored in db to a hashed version
     this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync(10));
   };
+
+  // create a profile to attach to user
+  const profile = await Profile.create({})
+
+  // set profile id
+  this.profile = profile._id;
+
   // continue
   return next();
 })
 
-// cascade hook: delete attached profile
-UserSchema.pre("deleteOne", function (this: User, next: Function) {
-  Profile.deleteOne({ _id: this.profile }).then(() => next())
+// custom validation, for the purpose of creating a profile in the pre-save hook
+UserSchema.pre("validate", async function (this: User, next: Function) {
+  // attempt to find email used in registration in db
+  const user = UserModel.findOne({ email: this.email })
+
+  if (user) {
+    // throw error if found
+    return next({ error: "Email already exists." })
+  } else {
+    // continue if not
+    return next()
+  }
+
 })
 
+// cascade hook: delete attached profile
+UserSchema.pre("deleteOne", async function (this: User, next: Function) {
+  await Profile.deleteOne({ _id: this.profile })
+  next();
+})
+
+const UserModel = model<UserMethods>("User", UserSchema);
+
 // export model
-export default model<UserMethods>("User", UserSchema)
+export default UserModel

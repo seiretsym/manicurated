@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import { Schema, Document, model } from 'mongoose';
 import Collection from "../collection";
 import Photo from "../photo";
 
@@ -20,7 +20,7 @@ const ProfileSchema = new Schema<Profile>({
   },
   collections: [{
     type: Schema.Types.ObjectId,
-    ref: "Profile"
+    ref: "Collection"
   }],
   photos: [{
     type: Schema.Types.ObjectId,
@@ -39,4 +39,4 @@ ProfileSchema.pre("deleteOne", function (this: Profile, next: Function) {
 })
 
 // export model
-export default mongoose.model<Profile>("Profile", ProfileSchema);
+export default model<Profile>("Profile", ProfileSchema);
