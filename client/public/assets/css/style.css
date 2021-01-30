@@ -1,5 +1,143 @@
+/* Imports */
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Hachi+Maru+Pop&family=Montserrat+Alternates&family=Montserrat&display=swap');
+/* Fonts
+    Hachi Maru Pop
+    Great Vibes
+    Raleway
+    Montserrat
+*/
+
+
+/* Document Styling */
 body {
   background-image: linear-gradient(-45deg, transparent 25%, #FFCCCC 25%, #FFCCCC 50%, transparent 50%, transparent 75%, #FFCCCC 75%);
+  background-size: 3px 3px;
+  background-repeat: repeat;
+  padding: 0px;
+  margin: 0px;
+  font-family: "Montserrat", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Montserrat Alternates", sans-serif;
+  margin: 0px;
+}
+
+p {
+  font-family: "Montserrat", sans-serif;
+  margin: 0px;
+}
+
+.link {
+  cursor: pointer;
+  color: skyblue;
+  font-weight: bold;
+  text-shadow: 2px 1px 3px black;
+  transition: all 0.5s ease-in-out;
+}
+
+.link:hover {
+  color: hotpink;
+}
+/* End Document Styling */
+
+/* Color Classes */
+.c-skyblue {
+  color: skyblue;
+}
+
+.c-hotpink {
+  color: hotpink;
+}
+/* End Color Classes */
+
+/* Header Styling */
+header {
+  padding: 20px;
+}
+
+header h1 {
+  font-family: "Hachi Maru Pop", sans-serif;
+  font-size: 50px;
+  text-align: center;
+  font-weight: 800;
+  color: hotpink;
+  text-shadow: 2px 1px 3px black;
+  margin: 0px;
+}
+/* End Header Styling */
+
+/* Nav Styling */
+nav {
+  font-family: "Great Vibes", sans-serif;
+  font-size: 34px;
+  padding: 10px 20px;
+}
+
+nav .nav-list {
+  list-style: none;
+  margin: 0px;
+  padding: 0px;
+  display: flex;
+  flex-direction: row;
+}
+
+nav .nav-list .nav-item {
+  padding: 10px 20px;
+}
+
+nav li:first-child {
+  margin-left: auto;
+}
+
+nav li:last-child {
+  margin-right: auto;
+}
+
+nav a {
+  text-decoration: none;
+  font-weight: 500;
+  color: skyblue;
+  transition: all 0.5s ease-in-out;
+  text-shadow: 2px 1px 3px black;
+}
+
+nav a:hover {
+  color: hotpink;
+  text-shadow: -2px -1px 3px black;
+}
+/* End Nav Styling */
+
+/* Content Styling */
+section.content {
+  max-width: 1280px;
+  height: calc(100vh - 300px);
+  margin: 0px auto;
+  border-radius: 25px;
+  background-color: rgba(235, 166, 135, 0.4);
   background-size: 2px 2px;
   background-repeat: repeat;
+  padding: 25px;
+  box-shadow: 1px 1px 10px 2px rgba(235, 166, 135, 0.6);
+  overflow: auto;
 }
+
+section.content h1 {
+  font-size: 28px;
+}
+
+section.content p {
+  font-size: 18px;
+}
+
+/* End Content Styling */
+
+/* Footer Styling */
+footer {
+  padding: 19px;
+  font-size: 20px;
+  font-family: "Montserrat", sans-serif;
+  text-align: center;
+  color: hotpink;
+}
+/* End Footer Styling */

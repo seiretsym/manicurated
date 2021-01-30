@@ -1,32 +1,21 @@
 <template>
   <main>
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <header>
+      <h1>Mani<span class="c-skyblue">Curate</span></h1>
+    </header>
+    <nav>
+      <ul class="nav-list">
+        <li class="nav-item">
+          <router-link to="/">Home</router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/about">About</router-link>
+        </li>
+      </ul>
+    </nav>
     <router-view />
+    <footer>
+      <h6>Copyright &copy; 2021</h6>
+    </footer>
   </main>
 </template>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-#nav {
-  padding: 30px;
-}
-
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>
