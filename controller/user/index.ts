@@ -1,10 +1,7 @@
 import * as db from "../../models";
-import UserMethods from "../../models/user";
-
 import { Request, Response } from "express";
 
 async function login(req: Request, res: Response) {
-
   try {
     const user = await db.User.findOne({ email: req.body.email })
     if (!user) {
@@ -19,11 +16,9 @@ async function login(req: Request, res: Response) {
   catch (err) {
     res.json(err);
   }
-
 };
 
 async function create(req: Request, res: Response) {
-
   try {
     const user = await db.User.create(req.body)
     user.password = "";
@@ -34,4 +29,17 @@ async function create(req: Request, res: Response) {
   }
 };
 
-export { login, create }
+async function remove(req: Request, res: Response) {
+  try {
+    const user = await db.User.findOne({ _id: req.params.id });
+    await user.cascadeDelete();
+    await db.User.deleteOne({ _id: req.params.id });
+    console.log(`User: '${user.email}' Removed`)
+    res.status(200).json({ ok: "Account Deleted" });
+  }
+  catch (err) {
+    res.status(422).json(err);
+  }
+}
+
+export { login, create, remove }

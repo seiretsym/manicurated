@@ -10,8 +10,9 @@ interface User extends Document {
 }
 
 // model method type
-export interface UserMethods extends User, Document {
+interface UserMethods extends User, Document {
   validatePassword(password: string): boolean
+  cascade(): void
 }
 
 // define model
@@ -19,7 +20,9 @@ const UserSchema = new Schema<UserMethods>({
   email: {
     type: String,
     required: true,
-    unique: true
+    index: {
+      unique: true
+    }
   },
   password: {
     type: String,
@@ -36,6 +39,13 @@ const UserSchema = new Schema<UserMethods>({
 UserSchema.methods.validatePassword = function (this: UserMethods, password: string) {
   // return true or false based on comparison
   return bcrypt.compareSync(password, this.password);
+}
+
+UserSchema.methods.cascadeDelete = async function (this: UserMethods) {
+  const profile = await Profile.findOne({ _id: this.profile });
+  await profile.cascadeDelete();
+  await Profile.deleteOne({ _id: this.profile });
+  return console.log("Profile Removed");
 }
 
 // create hook for password encryption
@@ -59,8 +69,7 @@ UserSchema.pre("save", async function (this: User, next: Function) {
 // custom validation, for the purpose of creating a profile in the pre-save hook
 UserSchema.pre("validate", async function (this: User, next: Function) {
   // attempt to find email used in registration in db
-  const user = UserModel.findOne({ email: this.email })
-
+  const user = await UserModel.findOne({ email: this.email })
   if (user) {
     // throw error if found
     return next({ error: "Email already exists." })
@@ -69,12 +78,6 @@ UserSchema.pre("validate", async function (this: User, next: Function) {
     return next()
   }
 
-})
-
-// cascade hook: delete attached profile
-UserSchema.pre("deleteOne", async function (this: User, next: Function) {
-  await Profile.deleteOne({ _id: this.profile })
-  next();
 })
 
 const UserModel = model<UserMethods>("User", UserSchema);

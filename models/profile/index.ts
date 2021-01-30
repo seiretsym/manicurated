@@ -1,4 +1,5 @@
 import { Schema, Document, model } from 'mongoose';
+import { Profile } from '..';
 import Collection from "../collection";
 import Photo from "../photo";
 
@@ -8,6 +9,10 @@ interface Profile extends Document {
   picture: string,
   collections: Array<Schema.Types.ObjectId>
   photos: Array<Schema.Types.ObjectId>
+}
+
+interface ProfileMethods extends Profile {
+  cascadeDelete(): void;
 }
 
 // define model
@@ -28,15 +33,11 @@ const ProfileSchema = new Schema<Profile>({
   }]
 })
 
-// cascade hook: delete collections from db
-ProfileSchema.pre("deleteOne", function (this: Profile, next: Function) {
-  Collection.deleteMany({ _id: this.collections }).then(() => next())
-})
-
-// cascade hook: delete photos from db
-ProfileSchema.pre("deleteOne", function (this: Profile, next: Function) {
-  Photo.deleteMany({ _id: this.photos }).then(() => next())
-})
+ProfileSchema.methods.cascadeDelete = async function (this: Profile) {
+  await Collection.deleteMany({ _id: this.collections })
+  await Photo.deleteMany({ _id: this.photos })
+  return console.log("Collections & Photos Removed");
+}
 
 // export model
-export default model<Profile>("Profile", ProfileSchema);
+export default model<ProfileMethods>("Profile", ProfileSchema);
