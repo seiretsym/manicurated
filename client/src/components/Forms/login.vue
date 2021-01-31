@@ -2,11 +2,26 @@
   <section class="form-section">
     <h1 class="c-hotpink">Welcome</h1>
     <p>Please sign in to begin curating your manicures.</p>
-    <form class="form-fluid">
+    <form
+      class="form-fluid"
+      action="/api/user"
+      method="POST"
+      v-on:submit="(event) => $store.dispatch({ type: 'login', event: event })"
+    >
       <label for="email">Email</label>
-      <input type="email" placeholder="Enter your Email" />
+      <input
+        type="email"
+        name="email"
+        placeholder="Enter your Email"
+        required
+      />
       <label for="password">Password</label>
-      <input type="password" placeholder="Enter your Password" />
+      <input
+        type="password"
+        name="password"
+        placeholder="Enter your Password"
+        required
+      />
       <input type="submit" value="Submit" />
     </form>
     <p>
