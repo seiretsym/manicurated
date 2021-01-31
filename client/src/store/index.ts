@@ -1,3 +1,4 @@
+import e from 'express';
 import { createStore } from 'vuex'
 import api from '../utils/api';
 
@@ -15,12 +16,12 @@ export default createStore({
     async login({ state }, { event }) {
       event.preventDefault();
       const data = {
-        name: event.target.elements.email.value,
+        email: event.target.elements.email.value,
         password: event.target.elements.password.value
       }
       try {
         const login = await api.login(data);
-        console.log(login);
+        state.authed = true;
       }
       catch (err) {
         switch (err.response.status) {
@@ -39,6 +40,21 @@ export default createStore({
             event.target.elements.password.value = "";
             event.target.elements.email.focus();
         }
+      }
+    },
+    async register({ state }, { event }) {
+      event.preventDefault();
+      const { email, password } = event.target.elements
+      const data = {
+        email: email.value,
+        password: password.value
+      }
+      try {
+        await api.register(data);
+        console.log("successful registration")
+      }
+      catch (err) {
+        console.log(err.response.status);
       }
     }
   },

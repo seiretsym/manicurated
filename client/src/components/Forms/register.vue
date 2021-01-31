@@ -2,13 +2,38 @@
   <section class="form-section">
     <h1 class="c-hotpink">Welcome</h1>
     <p>Please sign in to begin curating your manicures.</p>
-    <form class="form-fluid">
+    <form
+      class="form-fluid"
+      v-on:submit="
+        (event) => $store.dispatch({ type: 'register', event: event })
+      "
+    >
       <label for="email">Email</label>
-      <input type="email" placeholder="Enter your Email" />
+      <input
+        type="email"
+        name="email"
+        placeholder="Enter your Email"
+        required
+      />
       <label for="password">Password</label>
-      <input type="password" placeholder="Enter your Password" />
+      <input
+        type="password"
+        name="password"
+        minlength="6"
+        placeholder="Enter your Password"
+        v-on:change="(event) => updateValidator(event)"
+        required
+      />
       <label for="password">Confirm Password</label>
-      <input type="password" placeholder="Confirm your Password" />
+      <input
+        type="password"
+        name="confirm"
+        minlength="6"
+        title="Must match password"
+        placeholder="Confirm your Password"
+        :pattern="password"
+        required
+      />
       <input type="submit" value="Submit" />
     </form>
     <p>
@@ -102,6 +127,15 @@ import { Vue, Options } from "vue-class-component";
     changeView: function (view: string) {
       this.$store.view = view;
     },
+    updateValidator: function (event: Event) {
+      const input = event.target as HTMLInputElement;
+      this.password = input.value;
+    },
+  },
+  data: function () {
+    return {
+      password: String,
+    };
   },
 })
 export default class Register extends Vue {}

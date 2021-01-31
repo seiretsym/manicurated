@@ -2,7 +2,7 @@ import * as db from "../../models";
 import { Request, Response } from "express";
 
 async function login(req: Request, res: Response) {
-  console.log("user login");
+  console.log("user login", req.body);
   try {
     const user = await db.User.findOne({ email: req.body.email })
     if (!user) {
